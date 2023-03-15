@@ -1,5 +1,7 @@
 const { Telegraf } = require('telegraf');
 
+require("dotenv").config();
+
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
 bot.start((ctx) => {
@@ -9,7 +11,7 @@ bot.start((ctx) => {
 bot.on('text', async (ctx) => {
   const userId = ctx.message.text;
   try {
-    const {username, photo, ...user} = await bot.telegram.getChat(userId);
+    const {id: _, emoji_status_custom_emoji_id: _2, username, photo, ...user} = await bot.telegram.getChat(userId);
 
     username ? ctx.reply(`Ник пользователя с id ${userId}: @${username}`) : ctx.reply(`Ник у пользователя не установлен`);
     ctx.reply(stringify(user), {parse_mode: "HTML"});
