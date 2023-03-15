@@ -9,10 +9,12 @@ bot.start((ctx) => {
 bot.on('text', async (ctx) => {
   const userId = ctx.message.text;
   try {
-    const {username, ...user} = await bot.telegram.getChat(userId);
-    
+    const {username, photo, ...user} = await bot.telegram.getChat(userId);
+
     username ? ctx.reply(`Ник пользователя с id ${userId}: @${username}`) : ctx.reply(`Ник у пользователя не установлен`);
-    ctx.reply(stringify(user), {parse_mode: "Markdown"});
+    ctx.reply(stringify(user), {parse_mode: "HTML"});
+    //const photoObj = await bot.telegram.getFileLink(photo.small_file_id);
+    //ctx.replyWithPhoto(photoObj.href);
   } catch (error) {
     console.error(error);
     ctx.reply(`Не удалось получить имя пользователя с id ${userId}.`);
@@ -24,8 +26,8 @@ bot.launch();
 function stringify (record) {
   let res = ''
   for (key in record) {
-    res += `**${key}**: ${record[key]}\n`
+    res += `<b>${key}</b>: ${record[key]}\n`
   }
-    
+
   return res;
 }
